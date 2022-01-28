@@ -3,6 +3,8 @@ import { Observable, Subject } from 'rxjs';
 import { Cart } from '../interfaces/cart';
 import { Product } from '../interfaces/product';
 import { ProductService } from '../services/product.service';
+import { Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product',
@@ -11,31 +13,27 @@ import { ProductService } from '../services/product.service';
 })
 export class ProductComponent implements OnInit {
   products: Product[];
-  cart: Cart[];
-
-  productId = new Subject<number>();
-  cartFromId$: Observable<Cart>;
+  cart$: Observable<Cart[]>;
 
   constructor(private productService: ProductService, private router: Router) {
-    // this.products = productService.getProducts;
-    // this.cart = productService.getCart;
-    // this.cartFromId$ = this.productId.pipe(
-    //   map((id) => this.cart.find((item) => item.id === id))
-    // );
+    this.products = productService.getProducts;
+    this.cart$ = productService.getCart;
   }
 
   ngOnInit() {}
 
   addToCart(product: Product) {
-    // this.productService.addToCart(product);
+    this.productService.addToCart(product);
   }
 
   removeFromCart(product: Product) {
-    // this.productService.removeFromCart(product);
+    this.productService.removeFromCart(product);
   }
 
-  getCartQty(id: number) {
-    // return this.cart.find((item) => item.id === id)?.qty;
+  getCartQty(product: Product) {
+    return this.cart$.pipe(
+      map((items) => items.find((item) => item.product.id === product.id)?.qty)
+    );
   }
 
   goToCart() {

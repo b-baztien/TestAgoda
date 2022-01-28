@@ -1,2 +1,13 @@
+<ng-container *ngIf="(carts$ | async).length === 0">
+  Your cart is empty !!<br />
+</ng-container>
+<div class="cart-row">
+  <fieldset *ngFor="let cart of carts$ | async">
+    <legend>{{ cart.product.name }}</legend>
+    <img [src]="cart.product.image" />
+    Qty : {{ cart.qty }} Price : {{ cart.product.price }} Total :
+    {{ cart.product.price * cart.qty }}
+  </fieldset>
+</div>
 
 <button (click)="goToProduct()">Go To Product</button>

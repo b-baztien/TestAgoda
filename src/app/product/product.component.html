@@ -1,10 +1,13 @@
-<div *ngFor="let product of products">
-  {{ product.name }}<br />
-  {{ product.price }}<br />
-  <button (click)="addToCart(product)">Add to cart</button>
-  {{ getCartQty(product.id) }}
-  <button *ngIf="getCartQty(product.id) >= 0" (click)="removeFromCart(product)">
-    Remove from cart
-  </button>
+<div class="product-row">
+  <fieldset *ngFor="let product of products">
+    <legend>{{ product.name }}</legend>
+    <img [src]="product.image" />
+    Price : {{ product.price }}<br />
+    <button (click)="addToCart(product)">+</button>
+    <ng-container *ngIf="(getCartQty(product) | async) > 0">
+      {{ getCartQty(product) | async }}
+      <button (click)="removeFromCart(product)">-</button>
+    </ng-container>
+  </fieldset>
 </div>
 <button (click)="goToCart()">View Cart</button>
